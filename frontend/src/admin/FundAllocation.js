@@ -19,6 +19,7 @@ const FundAllocationPage = () => {
   const [isAdminHead, setIsAdminHead] = useState(false);
   const [grievances, setGrievances] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [statusUpdate, setStatusUpdate] = useState({ projectId: null, newStatus: '' });
 
   useEffect(() => {
     initializeContract();
@@ -54,27 +55,25 @@ const FundAllocationPage = () => {
 
   const fetchProjects = async (contractInstance) => {
     try {
-      // Since there's no projectCount, we'll try to fetch projects until we get an error
       const allProjects = [];
       let i = 0;
 
       while (true) {
         try {
           const project = await contractInstance.projects(i);
-          if (project.pname === "") break; // Stop if we hit an empty project
+          if (project.pname === "") break;
 
           allProjects.push({
             id: i,
             name: project.pname,
             details: project.details,
-            fundsRequired: ethers.formatEther(project.fundsRequired),
-            fundsAllocated: ethers.formatEther(project.fundsAllocated),
+            fundsRequired: project.fundsRequired.toString(),
+            fundsAllocated: project.fundsAllocated.toString(),
             status: project.status,
             manager: project.projectManager
           });
           i++;
         } catch (err) {
-          // Stop when we can't access the next project
           break;
         }
       }
@@ -101,12 +100,17 @@ const FundAllocationPage = () => {
       return;
     }
 
+    if (!/^\d+$/.test(fundsRequired)) {
+      alert("Please enter a valid WEI amount (numbers only)");
+      return;
+    }
+
     try {
       setLoading(true);
       const tx = await contract.createProject(
         name,
         details,
-        ethers.parseEther(fundsRequired),
+        fundsRequired,
         projectManager,
         relatedGrievances
       );
@@ -128,16 +132,30 @@ const FundAllocationPage = () => {
     }
   };
 
-  const handleFundProject = async (projectId, amount) => {
+  const handleUpdateStatus = async () => {
+    if (statusUpdate.projectId === null || !statusUpdate.newStatus) {
+      alert("Please select a project and status");
+      return;
+    }
+
     try {
       setLoading(true);
-      const tx = await contract.fundProject(projectId, ethers.parseEther(amount));
+      let tx;
+      if (statusUpdate.newStatus === "COMPLETED") {
+        tx = await contract.completeProject(statusUpdate.projectId);
+      } else {
+        // For other status changes you might need to add more functions in your contract
+        alert("Only completion status can be updated currently");
+        return;
+      }
+
       await tx.wait();
-      alert("Project funded successfully!");
+      alert("Project status updated successfully!");
+      setStatusUpdate({ projectId: null, newStatus: '' });
       await fetchProjects(contract);
     } catch (err) {
-      console.error("Error funding project:", err);
-      alert(`Failed to fund project: ${err.reason || err.message}`);
+      console.error("Error updating project status:", err);
+      alert(`Failed to update status: ${err.reason || err.message}`);
     } finally {
       setLoading(false);
     }
@@ -166,7 +184,16 @@ const FundAllocationPage = () => {
           <h3>Create New Project</h3>
           <input type="text" value={newProject.name} onChange={(e) => setNewProject({ ...newProject, name: e.target.value })} placeholder="Project Name" className="form-input" />
           <textarea value={newProject.details} onChange={(e) => setNewProject({ ...newProject, details: e.target.value })} placeholder="Project Details" className="form-textarea" />
-          <input type="number" value={newProject.fundsRequired} onChange={(e) => setNewProject({ ...newProject, fundsRequired: e.target.value })} placeholder="Funds Required (in ETH)" className="form-input" />
+          <input
+            type="text"
+            value={newProject.fundsRequired}
+            onChange={(e) => {
+              const value = e.target.value.replace(/\D/g, '');
+              setNewProject({ ...newProject, fundsRequired: value });
+            }}
+            placeholder="Funds Required (in WEI)"
+            className="form-input"
+          />
           <input type="text" value={newProject.projectManager} onChange={(e) => setNewProject({ ...newProject, projectManager: e.target.value })} placeholder="Project Manager Address" className="form-input" />
           <select multiple onChange={(e) => {
             const selected = [...e.target.options].filter(opt => opt.selected).map(opt => parseInt(opt.value));
@@ -185,15 +212,39 @@ const FundAllocationPage = () => {
 
         <div className="project-list">
           <h3>Active Projects</h3>
+
+          {/* Status Update Form (shown when a project is selected) */}
+          {statusUpdate.projectId !== null && (
+            <div className="status-update-form">
+              <select
+                value={statusUpdate.newStatus}
+                onChange={(e) => setStatusUpdate({ ...statusUpdate, newStatus: e.target.value })}
+                className="form-select"
+              >
+                <option value="">Select Status</option>
+                <option value="COMPLETED">Mark as Completed</option>
+              </select>
+              <button onClick={handleUpdateStatus} className="action-button">
+                Update Status
+              </button>
+              <button
+                onClick={() => setStatusUpdate({ projectId: null, newStatus: '' })}
+                className="cancel-button"
+              >
+                Cancel
+              </button>
+            </div>
+          )}
+
           <table className="fund-table">
             <thead>
               <tr>
                 <th>Project Name</th>
                 <th>Details</th>
-                <th>Required (ETH)</th>
-                <th>Allocated (ETH)</th>
+                <th>Required (WEI)</th>
+                <th>Allocated (WEI)</th>
                 <th>Status</th>
-                {/* <th>Actions</th> */}
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -201,22 +252,19 @@ const FundAllocationPage = () => {
                 <tr key={project.id}>
                   <td>{project.name}</td>
                   <td>{project.details}</td>
-                  <td>{project.fundsRequired}</td>
-                  <td>{project.fundsAllocated}</td>
+                  <td>{Number(project.fundsRequired).toLocaleString()}</td>
+                  <td>{Number(project.fundsAllocated).toLocaleString()}</td>
                   <td><span className={`status-badge ${project.status.toLowerCase()}`}>{project.status}</span></td>
-                  {/* <td>
-                    {project.status === 'PLANNING' && (
+                  <td>
+                    {project.status === 'ONGOING' && (
                       <button
-                        onClick={() => {
-                          const amount = prompt("Enter funding amount (in ETH):");
-                          if (amount && !isNaN(amount)) handleFundProject(project.id, amount);
-                        }}
+                        onClick={() => setStatusUpdate({ projectId: project.id, newStatus: '' })}
                         className="action-button"
                       >
-                        Fund
+                        Update Status
                       </button>
                     )}
-                  </td> */}
+                  </td>
                 </tr>
               )) : (
                 <tr><td colSpan="6">No projects found.</td></tr>

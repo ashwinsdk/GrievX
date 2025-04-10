@@ -59,8 +59,8 @@ function SendFundPage() {
           allProjects.push({
             id: i,
             name: project.pname,
-            fundsRequired: ethers.formatEther(project.fundsRequired),
-            fundsAllocated: ethers.formatEther(project.fundsAllocated),
+            fundsRequired: project.fundsRequired.toString(), // Store as wei string
+            fundsAllocated: project.fundsAllocated.toString(), // Store as wei string
             status: project.status,
             manager: project.projectManager
           });
@@ -79,7 +79,7 @@ function SendFundPage() {
   const fetchBalance = async (contractInstance) => {
     try {
       const rawBalance = await contractInstance.getContractBalance();
-      setBalance(ethers.formatEther(rawBalance));
+      setBalance(rawBalance);
     } catch (err) {
       console.error("Error fetching balance:", err);
     }
@@ -87,13 +87,13 @@ function SendFundPage() {
 
   const handleFundProject = async (projectId) => {
     try {
-      const amount = prompt(`Enter funding amount in ETH for project ${projectId}:`);
+      const amount = prompt(`Enter funding amount in wei for project ${projectId}:`);
       if (!amount || isNaN(amount)) return;
 
       setLoading(true);
       const tx = await contract.fundProject(
         projectId,
-        ethers.parseEther(amount)
+        amount // Directly use wei value
       );
       await tx.wait();
       alert("Project funded successfully!");
@@ -133,7 +133,7 @@ function SendFundPage() {
       <div className="section-title">Government Fund Management</div>
 
       <div className="financial-summary">
-        <p>Available Contract Balance: <strong>{balance} ETH</strong></p>
+        <p>Available Contract Balance: <strong>{balance} WEI</strong></p>
       </div>
 
       <div className="fund-table-wrapper">
@@ -141,8 +141,8 @@ function SendFundPage() {
           <thead>
             <tr>
               <th>Project Name</th>
-              <th>Required Funds (ETH)</th>
-              <th>Allocated Funds (ETH)</th>
+              <th>Required Funds (wei)</th>
+              <th>Allocated Funds (wei)</th>
               <th>Status</th>
               <th>Action</th>
             </tr>

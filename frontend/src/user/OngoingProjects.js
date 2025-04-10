@@ -20,31 +20,24 @@ function OngoingProjects() {
         const provider = new ethers.BrowserProvider(window.ethereum);
         const contract = new ethers.Contract(contractAddress, contractABI.abi, provider);
 
-        // Get project count (would need to add this function to your contract)
-        // const projectCount = await contract.projectCount();
-
-        // For now, we'll assume we can get all projects (you might need to track IDs)
         const allProjects = [];
 
-        // This is a temporary solution - in production you should track project IDs
-        // or implement a proper counter in your contract
-        for (let i = 0; i < 10; i++) { // Check first 10 possible projects
+        for (let i = 0; i < 10; i++) {
           try {
             const project = await contract.projects(i);
-            if (project && project.pname) { // Simple check if project exists
+            if (project && project.pname) {
               allProjects.push({
                 id: i,
                 pname: project.pname,
                 details: project.details,
-                fundsRequired: ethers.formatEther(project.fundsRequired),
-                fundsAllocated: ethers.formatEther(project.fundsAllocated),
+                fundsRequired: project.fundsRequired.toString(), // Keep as WEI string
+                fundsAllocated: project.fundsAllocated.toString(), // Keep as WEI string
                 status: project.status,
                 adminHead: project.adminHead,
                 projectManager: project.projectManager
               });
             }
           } catch (e) {
-            // Likely reached end of projects
             break;
           }
         }
@@ -61,7 +54,6 @@ function OngoingProjects() {
     fetchProjects();
   }, []);
 
-  // Helper function to format status for display
   const formatStatus = (status) => {
     switch (status) {
       case "PLANNING": return "Planning";
@@ -71,25 +63,16 @@ function OngoingProjects() {
     }
   };
 
+  const formatWei = (wei) => {
+    return Number(wei).toLocaleString(); // Format WEI with commas
+  };
+
   if (loading) {
-    return (
-      <div className="projects-page">
-        <div className="projects-box">
-          <h2 className="projects-title">Loading Projects...</h2>
-        </div>
-      </div>
-    );
+    return <div className="projects-page"><h2>Loading Projects...</h2></div>;
   }
 
   if (error) {
-    return (
-      <div className="projects-page">
-        <div className="projects-box">
-          <h2 className="projects-title">Error</h2>
-          <p className="error-message">{error}</p>
-        </div>
-      </div>
-    );
+    return <div className="projects-page"><h2>Error</h2><p>{error}</p></div>;
   }
 
   return (
@@ -104,8 +87,8 @@ function OngoingProjects() {
               <tr>
                 <th>Name</th>
                 <th>Details</th>
-                <th>Funds Required (ETH)</th>
-                <th>Funds Allocated (ETH)</th>
+                <th>Funds Required (WEI)</th>
+                <th>Funds Allocated (WEI)</th>
                 <th>Status</th>
               </tr>
             </thead>
@@ -115,15 +98,13 @@ function OngoingProjects() {
                   <tr key={index}>
                     <td>{project.pname}</td>
                     <td>{project.details}</td>
-                    <td>{project.fundsRequired}</td>
-                    <td>{project.fundsAllocated}</td>
+                    <td>{formatWei(project.fundsRequired)}</td>
+                    <td>{formatWei(project.fundsAllocated)}</td>
                     <td>{formatStatus(project.status)}</td>
                   </tr>
                 ))
               ) : (
-                <tr>
-                  <td colSpan="5">No projects found.</td>
-                </tr>
+                <tr><td colSpan="5">No projects found.</td></tr>
               )}
             </tbody>
           </table>

@@ -37,7 +37,7 @@ function PayTaxes() {
 
                     // Get tax amount
                     const amount = await contract.fixedTaxAmount();
-                    setTaxAmount(ethers.formatEther(amount));
+                    setTaxAmount(amount);
 
                     // Get payment history
                     await loadPaymentHistory(contract, address);
@@ -60,7 +60,7 @@ function PayTaxes() {
                 const block = await tx.getBlock();
                 return {
                     txHash: event.transactionHash,
-                    amount: ethers.formatEther(event.args.amount),
+                    amount: event.args.amount,
                     timestamp: new Date(block.timestamp * 1000).toLocaleString()
                 };
             }));
@@ -117,7 +117,7 @@ function PayTaxes() {
                         </label>
                         <input
                             type="text"
-                            value={`${taxAmount} ETH`}
+                            value={`${taxAmount} WEI`}
                             readOnly
                             style={{
                                 width: '100%',
@@ -138,7 +138,7 @@ function PayTaxes() {
                             className="connect-button"
                             style={{ marginTop: '10px' }}
                         >
-                            Pay Tax ({taxAmount} ETH)
+                            Pay Tax ({taxAmount} WEI)
                         </button>
                     )}
                 </div>
@@ -152,7 +152,7 @@ function PayTaxes() {
                             <thead>
                                 <tr>
                                     <th>Transaction Hash</th>
-                                    <th>Amount (ETH)</th>
+                                    <th>Amount (WEI)</th>
                                     <th>Date</th>
                                 </tr>
                             </thead>
