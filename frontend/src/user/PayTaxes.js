@@ -12,15 +12,22 @@ function PayTaxes() {
     const [currentUser, setCurrentUser] = useState(null);
     const [contract, setContract] = useState(null);
     const [account, setAccount] = useState(null);
+    const [balance, setBalance] = useState("0");
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         async function init() {
             if (window.ethereum) {
                 try {
+                    setLoading(true);
                     const provider = new ethers.BrowserProvider(window.ethereum);
                     const signer = await provider.getSigner();
                     const address = await signer.getAddress();
                     setAccount(address);
+
+                    // Get account balance
+                    const balance = await provider.getBalance(address);
+                    setBalance(ethers.formatEther(balance));
 
                     const contract = new ethers.Contract(contractAddress, contractABI.abi, signer);
                     setContract(contract);
@@ -37,12 +44,15 @@ function PayTaxes() {
 
                     // Get tax amount
                     const amount = await contract.fixedTaxAmount();
-                    setTaxAmount(amount);
+                    setTaxAmount(ethers.formatEther(amount));
 
                     // Get payment history
                     await loadPaymentHistory(contract, address);
                 } catch (error) {
                     console.error("Error initializing contract:", error);
+                    alert(`Initialization error: ${error.message}`);
+                } finally {
+                    setLoading(false);
                 }
             }
         }
@@ -60,7 +70,7 @@ function PayTaxes() {
                 const block = await tx.getBlock();
                 return {
                     txHash: event.transactionHash,
-                    amount: event.args.amount,
+                    amount: ethers.formatEther(event.args.amount),
                     timestamp: new Date(block.timestamp * 1000).toLocaleString()
                 };
             }));
@@ -75,13 +85,38 @@ function PayTaxes() {
         if (!contract || !currentUser) return;
 
         try {
+            setLoading(true);
+
+            // Convert tax amount to BigInt
+            const taxAmountWei = ethers.parseEther(taxAmount);
+
+            // Estimate gas cost
+            const provider = new ethers.BrowserProvider(window.ethereum);
+            const gasEstimate = await contract.payTax.estimateGas({
+                value: taxAmountWei
+            });
+
+            // Get current gas price
+            const gasPrice = await provider.getFeeData();
+
+            // Calculate total cost (tax + gas)
+            const totalCost = taxAmountWei + (gasEstimate * gasPrice.gasPrice);
+
+            // Check balance
+            const currentBalance = await provider.getBalance(account);
+            if (currentBalance < totalCost) {
+                const shortfall = ethers.formatEther(totalCost - currentBalance);
+                throw new Error(`Insufficient funds. You need ${shortfall} more ETH to cover tax + gas.`);
+            }
+
+            // Execute transaction
             const tx = await contract.payTax({
-                value: ethers.parseEther(taxAmount)
+                value: taxAmountWei
             });
 
             await tx.wait();
 
-            // Refresh user and history
+            // Refresh data
             const user = await contract.users(account);
             setCurrentUser({
                 address: account,
@@ -94,6 +129,8 @@ function PayTaxes() {
         } catch (error) {
             console.error("Error paying tax:", error);
             alert(`Payment failed: ${error.message}`);
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -101,6 +138,17 @@ function PayTaxes() {
         <div className="govfunds-page">
             <div className="govfunds-box">
                 <h2 className="govfunds-title">Tax Payment System</h2>
+
+                {/* Balance Display */}
+                <div className="balance-display" style={{
+                    marginBottom: '20px',
+                    padding: '15px',
+                    backgroundColor: '#2a2a2a',
+                    borderRadius: '8px'
+                }}>
+                    <p style={{ color: '#ccc' }}>Your Wallet Balance: <strong>{balance} ETH</strong></p>
+                    <p style={{ color: '#ccc' }}>Tax Amount Due: <strong>{taxAmount} ETH</strong></p>
+                </div>
 
                 {/* Tax Payment Section */}
                 <div className="tax-payment-section" style={{
@@ -111,35 +159,22 @@ function PayTaxes() {
                 }}>
                     <h3 style={{ color: '#39FF14', marginBottom: '15px' }}>Pay Your Taxes</h3>
 
-                    <div style={{ marginBottom: '15px' }}>
-                        <label style={{ display: 'block', marginBottom: '5px', color: '#ccc' }}>
-                            Current Tax Amount:
-                        </label>
-                        <input
-                            type="text"
-                            value={`${taxAmount} WEI`}
-                            readOnly
-                            style={{
-                                width: '100%',
-                                padding: '10px',
-                                borderRadius: '8px',
-                                border: 'none',
-                                backgroundColor: '#222',
-                                color: '#fff'
-                            }}
-                        />
-                    </div>
-
                     {currentUser?.taxPaidStatus ? (
                         <p style={{ color: '#39FF14' }}>You have already paid taxes for this period.</p>
                     ) : (
-                        <button
-                            onClick={handlePayTax}
-                            className="connect-button"
-                            style={{ marginTop: '10px' }}
-                        >
-                            Pay Tax ({taxAmount} WEI)
-                        </button>
+                        <>
+                            <button
+                                onClick={handlePayTax}
+                                className="connect-button"
+                                disabled={loading}
+                                style={{ marginTop: '10px' }}
+                            >
+                                {loading ? 'Processing...' : `Pay Tax (ETH)`}
+                            </button>
+                            <p style={{ color: '#aaa', fontSize: '0.8rem', marginTop: '10px' }}>
+                                Note: Gas fees will be added to this amount
+                            </p>
+                        </>
                     )}
                 </div>
 
@@ -152,7 +187,7 @@ function PayTaxes() {
                             <thead>
                                 <tr>
                                     <th>Transaction Hash</th>
-                                    <th>Amount (WEI)</th>
+                                    <th>Amount (ETH)</th>
                                     <th>Date</th>
                                 </tr>
                             </thead>

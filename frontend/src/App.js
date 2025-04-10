@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
 import Home from './user/Home';
 import Login from './user/Login';
 import Register from './user/Register';
@@ -23,7 +24,9 @@ import AssignTaxes from './govt/AssignTaxes';
 
 import './App.css';
 
+
 function App() {
+
   return (
     <Router>
       <div className="App">
