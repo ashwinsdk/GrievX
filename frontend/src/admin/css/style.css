@@ -1,64 +1,634 @@
 .page-wrapper {
-    padding: 40px 20px;
-    background-color: #000;
-    color: #fff;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  padding: 40px 20px;
+  background-color: #000;
+  color: #fff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.logo {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #39FF14;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.section-title {
+  text-align: center;
+  font-size: 1.8rem;
+  margin-bottom: 2rem;
+  color: #fff;
+}
+
+.grid-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+  width: 100%;
+  max-width: 1100px;
+  /* Limits the grid's total width for better alignment */
+  justify-content: center;
+}
+
+.card {
+  background-color: #111;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 0 12px rgba(57, 255, 20, 0.15);
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: 0 0 20px rgba(57, 255, 20, 0.35);
+  transform: translateY(-5px);
+}
+
+.action-btn {
+  margin-top: 10px;
+  background-color: #39FF14;
+  color: #000;
+  padding: 10px 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.action-btn:hover {
+  background-color: #2ecc71;
+}
+
+
+
+
+/*ViewGrievance*/
+.table-container {
+  max-width: 1100px;
+  width: 100%;
+  overflow-x: auto;
+  border-radius: 10px;
+  background-color: #111;
+  padding: 20px;
+  box-shadow: 0 0 12px rgba(57, 255, 20, 0.1);
+}
+
+.people-data-table {
+  width: 100%;
+  border-collapse: collapse;
+  color: #fff;
+  text-align: left;
+}
+
+.people-data-table th,
+.people-data-table td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #333;
+}
+
+.people-data-table th {
+  background-color: #111;
+  color: #39FF14;
+  font-weight: 600;
+}
+
+.green-btn,
+.red-btn {
+  padding: 6px 12px;
+  margin: 2px;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.green-btn {
+  background-color: #39FF14;
+  color: #000;
+}
+
+.green-btn:hover {
+  background-color: #2ecc71;
+}
+
+.red-btn {
+  background-color: #ff4d4d;
+  color: #000;
+}
+
+.red-btn:hover {
+  background-color: #ff1a1a;
+}
+
+.neon-container {
+  background-color: #111;
+  border-radius: 12px;
+  padding: 20px;
+  border: 2px solid #39FF14;
+  box-shadow:
+    0 0 10px #39FF14,
+    0 0 20px #39FF14,
+    0 0 40px #39FF14,
+    0 0 80px rgba(57, 255, 20, 0.7);
+  transition: all 0.3s ease;
+}
+
+
+
+
+
+
+/*FundAllocationPage*/
+
+.fund-allocation-page {
+  min-height: 100vh;
+  background-color: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+  animation: fadeIn 0.8s ease-in-out;
+}
+
+.fund-box {
+  background-color: #111;
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 0 15px rgba(57, 255, 20, 0.3);
+  max-width: 900px;
+  width: 100%;
+  overflow-x: auto;
+}
+
+.fund-title {
+  text-align: center;
+  color: #39FF14;
+  font-size: 2rem;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.fund-subtext {
+  text-align: center;
+  font-size: 0.95rem;
+  color: #ccc;
+  margin-bottom: 25px;
+}
+
+.financial-summary {
+  text-align: right;
+  color: #fff;
+  margin-bottom: 20px;
+  font-size: 1rem;
+  background-color: #1a1a1a;
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: 1px solid #222;
+}
+
+.new-project-form input {
+  width: 100%;
+  max-width: 400px;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 8px;
+  color: #fff;
+}
+
+.new-project-form button {
+  background-color: #39FF14;
+  color: #000;
+  padding: 10px 20px;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.new-project-form button:hover {
+  background-color: #2ecc71;
+}
+
+.fund-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  margin-top: 30px;
+}
+
+.fund-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+  color: #fff;
+}
+
+.fund-table thead {
+  background-color: #222;
+}
+
+.fund-table th,
+.fund-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #333;
+  text-align: center;
+}
+
+.fund-table th {
+  color: #39FF14;
+  font-weight: 600;
+}
+
+.fund-table tbody tr:hover {
+  background-color: #1a1a1a;
+  transition: background 0.3s;
+}
+
+.fund-table button {
+  background-color: #39FF14;
+  color: #000;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.fund-table button:hover {
+  background-color: #2ecc71;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
   }
-  
-  .logo {
-    font-size: 2.5rem;
-    font-weight: bold;
-    color: #39FF14;
-    text-align: center;
-    margin-bottom: 1.5rem;
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  .section-title {
-    text-align: center;
-    font-size: 1.8rem;
-    margin-bottom: 2rem;
-    color: #fff;
+}
+
+
+
+
+
+/*ViewGrievance*/
+.grievance-page {
+  min-height: 100vh;
+  background-color: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+  animation: fadeIn 0.8s ease-in-out;
+}
+
+.grievance-box {
+  background-color: #111;
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 0 15px rgba(57, 255, 20, 0.3);
+  max-width: 900px;
+  width: 100%;
+  overflow-x: auto;
+}
+
+.grievance-title {
+  text-align: center;
+  color: #39FF14;
+  font-size: 2rem;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.grievance-subtext {
+  text-align: center;
+  font-size: 0.95rem;
+  color: #ccc;
+  margin-bottom: 25px;
+}
+
+.grievance-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  margin-top: 30px;
+}
+
+.grievance-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+  color: #fff;
+}
+
+.grievance-table thead {
+  background-color: #222;
+}
+
+.grievance-table th,
+.grievance-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #333;
+  text-align: center;
+}
+
+.grievance-table th {
+  color: #39FF14;
+  font-weight: 600;
+}
+
+.grievance-table tbody tr:hover {
+  background-color: #1a1a1a;
+  transition: background 0.3s;
+}
+
+.grievance-table button {
+  background-color: #39FF14;
+  color: #000;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-right: 8px;
+}
+
+.grievance-table button:hover {
+  background-color: #2ecc71;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
   }
-  
-  .grid-cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 24px;
-    width: 100%;
-    max-width: 1100px; /* Limits the grid's total width for better alignment */
-    justify-content: center;
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  .card {
-    background-color: #111;
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 0 12px rgba(57, 255, 20, 0.15);
-    text-align: center;
-    transition: all 0.3s ease;
-  }
-  
-  .card:hover {
-    box-shadow: 0 0 20px rgba(57, 255, 20, 0.35);
-    transform: translateY(-5px);
-  }
-  
-  .action-btn {
-    margin-top: 10px;
-    background-color: #39FF14;
-    color: #000;
-    padding: 10px 16px;
-    font-weight: bold;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .action-btn:hover {
-    background-color: #2ecc71;
-  }
-  
+}
+
+.edit-button {
+  background-color: #39ff14;
+  color: #000;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.edit-button:hover {
+  background-color: #2dd10f;
+}
+
+.edit-row {
+  background-color: rgba(57, 255, 20, 0.1);
+}
+
+.edit-form {
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+}
+
+.status-select {
+  padding: 5px;
+  border-radius: 4px;
+  border: 1px solid #39ff14;
+  background-color: #1a1a1a;
+  color: white;
+}
+
+.save-button {
+  background-color: #39ff14;
+  color: #000;
+  border: none;
+  padding: 5px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.save-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.cancel-button {
+  background-color: #ff4444;
+  color: white;
+  border: none;
+  padding: 5px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* Add to your style.css */
+.fund-allocation-page {
+  padding: 20px;
+  color: white;
+  background-color: #121212;
+}
+
+.fund-box {
+  background-color: #1e1e1e;
+  border-radius: 10px;
+  padding: 20px;
+  margin: 0 auto;
+  max-width: 1200px;
+}
+
+.fund-title {
+  color: #39ff14;
+  margin-bottom: 10px;
+}
+
+.fund-subtext {
+  color: #ccc;
+  margin-bottom: 20px;
+}
+
+.financial-summary {
+  background-color: #2a2a2a;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 1.1em;
+}
+
+.new-project-form {
+  background-color: #2a2a2a;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+}
+
+.new-project-form h3 {
+  margin-top: 0;
+  color: #39ff14;
+}
+
+.form-input,
+.form-textarea,
+.form-multiselect {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  border: 1px solid #39ff14;
+  background-color: #1e1e1e;
+  color: white;
+}
+
+.form-textarea {
+  min-height: 100px;
+}
+
+.form-multiselect {
+  min-height: 100px;
+}
+
+.submit-button,
+.action-button {
+  background-color: #39ff14;
+  color: black;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.submit-button:hover,
+.action-button:hover {
+  background-color: #2dd10f;
+}
+
+.submit-button:disabled {
+  background-color: #666;
+  cursor: not-allowed;
+}
+
+.status-badge {
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-size: 0.9em;
+  font-weight: bold;
+}
+
+.status-badge.planning {
+  background-color: #FFA500;
+  color: black;
+}
+
+.status-badge.ongoing {
+  background-color: #39ff14;
+  color: black;
+}
+
+.status-badge.completed {
+  background-color: #007bff;
+  color: white;
+}
+
+.fund-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.fund-table th,
+.fund-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #444;
+}
+
+.fund-table th {
+  background-color: #333;
+  color: #39ff14;
+}
+
+.fund-table tr:hover {
+  background-color: #2a2a2a;
+}
+
+.status-badge {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.status-badge.planning {
+  background-color: #FFA500;
+  color: #000;
+}
+
+.status-badge.ongoing {
+  background-color: #39ff14;
+  color: #000;
+}
+
+.status-badge.completed {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.address-cell {
+  font-family: monospace;
+}
+
+.connect-button {
+  background: linear-gradient(135deg, #00bcd4, #faff00);
+  color: #000;
+  padding: 14px 30px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 1rem;
+  text-decoration: none;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 0 15px rgba(0, 188, 212, 0.5);
+  max-width: 240px;
+  /* prevents it from stretching full width */
+  width: fit-content;
+  /* takes up only the space it needs */
+  white-space: nowrap;
+  /* keeps text on one line */
+  border: none;
+  cursor: pointer;
+}
+
+.connect-button:hover {
+  background: linear-gradient(135deg, #faff00, #00bcd4);
+  transform: scale(1.05);
+  color: #111;
+}
+
+.back-home-X {
+  display: inline-block;
+  margin-top: 25px;
+  font-size: 0.9rem;
+  color: #888;
+  text-decoration: none;
+}
+
+.back-home-X:hover {
+  background: linear-gradient(135deg, #faff00, #00bcd4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+}

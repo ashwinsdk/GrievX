@@ -6,7 +6,7 @@ import Register from './user/Register';
 import UserDashboard from './user/UserDashboard';
 import FileGrievances from './user/FileGrievances';
 import OngoingProjects from './user/OngoingProjects';
-import GovernmentFunds from './user/GovernmentFunds';
+import PayTaxes from './user/PayTaxes';
 import ContactUs from './user/ContactUs';
 import MyGrievances from './user/MyGrievances';
 import AllGrievances from './user/AllGrievances';
@@ -19,6 +19,7 @@ import ViewPeopleData from './admin/ViewPeopleData';
 import AdminGovtHome from './govt/AdminGovtHome';
 import SendFunds from './govt/SendFunds';
 import AssignAdminHead from './govt/AssignAdminHead';
+import AssignTaxes from './govt/AssignTaxes';
 
 import './App.css';
 
@@ -34,7 +35,7 @@ function App() {
           <Route path="/user-dashboard" element={<UserDashboard />} />
           <Route path="/file-grievances" element={<FileGrievances />} />
           <Route path="/ongoing-projects" element={<OngoingProjects />} />
-          <Route path="/government-funds" element={<GovernmentFunds />} />
+          <Route path="/pay-taxes" element={<PayTaxes />} />
           <Route path="/contact-us" element={<ContactUs />} />
           <Route path="/my-grievances" element={<MyGrievances />} />
           <Route path="/all-grievances" element={<AllGrievances />} />
@@ -49,6 +50,7 @@ function App() {
           <Route path="/admin-govt-home" element={<AdminGovtHome />} />
           <Route path="/send-funds" element={<SendFunds />} />
           <Route path="/govt/assign-admin-head" element={<AssignAdminHead />} />
+          <Route path="/govt/assign-taxes" element={<AssignTaxes />} />
 
           {/* Placeholder routes for features not implemented yet */}
           <Route path="/view-fund-allocation" element={<div>Fund Allocation Placeholder</div>} />

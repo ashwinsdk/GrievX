@@ -8,7 +8,7 @@ const AdminHeadHome = () => {
       <h1 className="logo">GrievX</h1>
 
       <h2 className="section-title">Welcome, Municipality Head</h2>
-      
+      {/* 
       <div className="grid-cards">
 
         <div className="card">
@@ -42,7 +42,31 @@ const AdminHeadHome = () => {
             <button className="action-btn">Details</button>
           </Link>
         </div>
-      </div>
+      </div> */}
+      <section className="dashboard-content">
+        <div className="dashboard-row">
+          <Link to="/view-grievance" className="card">
+            <h3>Edit Grievance</h3>
+            <p>Review and resolve grievances raised by city residents.</p>
+          </Link>
+
+          <Link to="/fund-allocation" className="card">
+            <h3>Fund Allocation</h3>
+            <p>Allocate funds to specific projects for urban development.</p>
+          </Link>
+        </div>
+
+        <div className="dashboard-row">
+
+          <Link to="/view-people-data" className="card">
+            <h3>View People Data</h3>
+            <p>Know what the municipality is building near you.</p>
+          </Link>
+
+        </div>
+        <Link to="/" className="back-home-X">← Back to Home</Link>
+
+      </section>
     </div>
   );
 };

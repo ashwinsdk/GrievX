@@ -13,10 +13,10 @@ function Home() {
       </section>
 
       <section className="about-section">
-        <h2>About Block-Dock</h2>
+        <h2>About GrievX</h2>
         <p>
-          Block-Dock is a secure Ethereum-based platform built to simplify grievance handling and 
-          manage public funds transparently. Our goal is to connect citizens and officials with 
+          GrievX is a secure Ethereum-based platform built to simplify grievance handling and
+          manage public funds transparently. Our goal is to connect citizens and officials with
           blockchain-backed clarity.
         </p>
       </section>

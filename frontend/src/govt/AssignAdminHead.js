@@ -1,64 +1,87 @@
 import React, { useState } from 'react';
 import './css/style.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+import contractABI from './../contracts/GrievanceSystem.json';
+import { ethers } from 'ethers';
+
+const contractAddress = "0x7Ea1cB94653bb0623C62F293dd864fea883369B2";
 
 const AssignAdminHead = () => {
   const navigate = useNavigate();
-  const [adminHead, setAdminHead] = useState({
-    address: '',
-    position: 'Municipality Head',
-  });
+  const [adminHeadAddress, setAdminHeadAddress] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setAdminHead((prevDetails) => ({
-      ...prevDetails,
-      [name]: value,
-    }));
-  };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Assigned Admin Head Details:', adminHead);
-    alert('Admin Head assigned successfully!');
-    navigate("/admin-govt-home");
+    setLoading(true);
+    setError('');
+
+    if (!window.ethereum) {
+      setError('Please install MetaMask');
+      setLoading(false);
+      return;
+    }
+
+    try {
+      // Validate address
+      if (!ethers.isAddress(adminHeadAddress)) {
+        throw new Error('Invalid Ethereum address');
+      }
+
+      const provider = new ethers.BrowserProvider(window.ethereum);
+      const signer = await provider.getSigner();
+      const contract = new ethers.Contract(contractAddress, contractABI.abi, signer);
+
+      // Call the smart contract function
+      const tx = await contract.assignAdminHead(adminHeadAddress);
+      await tx.wait();
+
+      alert('Admin Head assigned successfully!');
+      navigate("/admin-govt-home");
+    } catch (err) {
+      console.error("Error assigning admin head:", err);
+      setError(err.message || 'Failed to assign Admin Head');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="assign-admin-head">
-      <header className="header">
-        <h1>Block-Dock</h1>
-      </header>
+    <div className="assign-admin-head-container">
+      <div className="assign-admin-head-content">
+        <h2 className="assign-admin-head-title">Assign Admin Head</h2>
 
-      <div className="register-container">
-        <div className="register">
-          <h2>👨🏻‍✈️ Assign Admin Head</h2>
-          <form onSubmit={handleSubmit}>
-            <label>
+        {error && <div className="error-message">{error}</div>}
+
+        <form onSubmit={handleSubmit} className="assign-admin-head-form">
+          <div className="assign-admin-head-input-group">
+            <label htmlFor="address" className="assign-admin-head-input-label">
               Metamask Address:
-              <input
-                type="text"
-                name="address"
-                value={adminHead.address}
-                onChange={handleChange}
-                required
-              />
             </label>
-            <label>
-              Position:
-              <input
-                type="text"
-                name="position"
-                value={adminHead.position}
-                readOnly
-              />
-            </label>
+            <input
+              type="text"
+              id="address"
+              name="address"
+              value={adminHeadAddress}
+              onChange={(e) => setAdminHeadAddress(e.target.value)}
+              className="assign-admin-head-input-field"
+              placeholder="0x..."
+              required
+            />
+          </div>
 
-            <div className="button-group">
-              <button type="submit">Assign Admin Head</button>
-            </div>
-          </form>
-        </div>
+          <div className="button-group">
+            <button
+              type="submit"
+              className="connect-button"
+              disabled={loading}
+            >
+              {loading ? 'Processing...' : 'Assign'}
+            </button>
+          </div>
+        </form>
+        <Link to="/admin-govt-home" className="back-home">← Back to Home</Link>
       </div>
     </div>
   );

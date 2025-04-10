@@ -1,386 +1,367 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Source Code Pro", monospace;
+.page-wrapper {
+  background-color: #000;
+  min-height: 100vh;
+  padding: 60px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-html,
-body {
-    height: 100%;
-    background-color: #121212;
-    /* Dark background */
-    color: #e0e0e0;
-    /* Light text */
-    font-family: "Source Code Pro", monospace;
+.logo {
+  color: #39FF14;
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 20px;
 }
 
-.admin-govt-home {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+.section-title {
+  color: #ccc;
+  font-size: 1.4rem;
+  margin-bottom: 40px;
+  text-align: center;
 }
 
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px;
-    background-color: #1e1e1e;
-    /* Matches navbar */
-    color: #AFEEEE;
+.grid-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+  width: 100%;
+  max-width: 1100px;
 }
 
-.header h1 {
-    margin: 0;
-    color: #AFEEEE;
+.card {
+  background-color: #111;
+  border-radius: 16px;
+  padding: 25px;
+  box-shadow: 0 0 12px rgba(57, 255, 20, 0.2);
+  text-align: center;
+  transition: transform 0.3s;
 }
 
-@media (max-width: 768px) {
-    .admin-govt-links {
-        grid-template-columns: repeat(2, 1fr);
-    }
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 0 20px rgba(57, 255, 20, 0.4);
 }
 
-@media (max-width: 600px) {
-    .admin-govt-links {
-        grid-template-columns: 1fr;
-    }
-
-    .feature-card {
-        max-width: 100%;
-    }
+.card h3 {
+  color: #39FF14;
+  font-size: 1.3rem;
+  margin-bottom: 10px;
 }
 
-.dashboard {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    background-color: #181818;
-    /* Darker section background */
-    flex: 1;
+.card p {
+  color: #ccc;
+  font-size: 0.95rem;
+  margin-bottom: 20px;
 }
 
-.dashboard-title {
-    font-size: 24px;
-    font-weight: 600;
-    color: #AFEEEE;
-    /* Primary accent color */
-    margin-bottom: 20px;
-    text-align: center;
+.action-btn {
+  background-color: #39FF14;
+  color: #000;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
 }
 
-.dashboard-buttons {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
-    width: 100%;
-    max-width: 1200px;
+.action-btn:hover {
+  background-color: #2ecc71;
 }
 
-.dashboard-card {
-    background: #2a2a2a;
-    /* Card background */
-    border: 1px solid #444;
-    /* Dark border */
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: flex-start;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+.fade-in {
+  animation: fadeIn 0.8s ease-in-out;
 }
 
-.dashboard-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.7);
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.dashboard-card h3 {
-    font-size: 18px;
-    font-weight: 700;
-    color: #AFEEEE;
-    margin-bottom: 10px;
-}
 
-.dashboard-card p {
-    font-size: 14px;
-    color: #cccccc;
-    margin-bottom: 20px;
-}
 
-.dashboard-link {
-    text-decoration: none;
-    align-self: stretch;
-}
 
-.dashboard-button {
-    width: 100%;
-    padding: 15px;
-    font-size: 16px;
-    color: #121212;
-    /* Button text */
-    background-color: #AFEEEE;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.dashboard-button:hover {
-    background-color: #98dcdc;
-    /* Lighter turquoise */
-}
-
-.dashboard-button:focus {
-    outline: 2px solid #98dcdc;
-    outline-offset: 2px;
-}
-
+/*SendFundPage*/
+/* General Page Container */
 .receive-funds-container {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+  min-height: 100vh;
+  background-color: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+  animation: fadeIn 0.8s ease-in-out;
 }
 
-.header {
-    width: 100%;
-    text-align: center;
-    padding: 20px;
-    background-color: #1e1e1e;
-    /* Matches navbar */
-    color: #AFEEEE;
-}
-
-.header h1,
-.footer p {
-    margin: 0;
-}
-
-.content {
-    flex: 1;
-    padding: 20px;
-    background-color: #121212;
-}
-
-.title-h2 {
-    text-align: center;
-    color: #AFEEEE;
-    margin-bottom: 20px;
-    font-size: 24px;
-}
-
-.receive-funds-container h2 {
-    text-align: center;
-    color: #333;
-    margin-bottom: 20px;
-    font-size: 24px;
-}
-
+/* Financial Summary Section */
 .financial-summary {
-    display: flex;
-    justify-content: space-around;
-    margin-bottom: 20px;
-    font-size: 18px;
-    background-color: #121212;
-    padding: 10px;
-    border-radius: 10px;
+  text-align: center;
+  color: #fff;
+  margin-bottom: 30px;
+  font-size: 1.2rem;
+  background-color: #1a1a1a;
+  padding: 12px 16px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(57, 255, 20, 0.3);
 }
 
-.add-fund-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 20px;
+/* Title */
+.title-h2 {
+  color: #39FF14;
+  font-size: 2rem;
+  margin-bottom: 20px;
+  font-weight: bold;
 }
 
-.add-fund-form input {
-    width: 80%;
-    max-width: 400px;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+/* Fund Table Wrapper */
+.fund-table-wrapper {
+  width: 100%;
+  max-width: 900px;
+  overflow-x: auto;
+  margin-top: 30px;
+  box-shadow: 0 0 10px rgba(57, 255, 20, 0.3);
+  /* Adds a soft glow to the table container */
 }
 
-.add-fund-form button {
-    width: 80%;
-    max-width: 400px;
-    padding: 10px;
-    border: none;
-    background-color: #AFEEEE;
-    color: 121212;
-    cursor: pointer;
-    border-radius: 5px;
-    font-size: 16px;
+/* Table Styling */
+.fund-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+  color: #fff;
+  background-color: #111;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(57, 255, 20, 0.1);
 }
 
-.add-fund-form button:hover {
-    background-color: #98dcdc;
+/* Table Header */
+.fund-table th,
+.fund-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #333;
+  text-align: center;
 }
 
-.receive-funds-table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: #2a2a2a;
-    margin-top: 10px;
+.fund-table thead {
+  background-color: #1a1a1a;
 }
 
-.receive-funds-table th {
-    background-color: #AFEEEE;
-    color: #2a2a2a;
-    padding: 10px;
-    text-align: left;
+.fund-table th {
+  color: #39FF14;
+  font-weight: 600;
 }
 
-.receive-funds-table td {
-    border: 1px solid #ddd;
-    padding: 10px;
+/* Table Row Hover Effect */
+.fund-table tbody tr:hover {
+  background-color: #1c1c1c;
+  transition: background 0.3s;
 }
 
-.receive-funds-table tr:nth-child(even) {
-    background-color: #2a2a2a;
+/* Button Styling */
+.fund-table button {
+  background-color: #39FF14;
+  color: #000;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
 }
 
-.receive-funds-table tr:hover {
-    background-color: #2c3e50;
+.fund-table button:disabled {
+  background-color: #444;
+  color: #999;
+  cursor: not-allowed;
 }
 
-.pay-button {
-    background-color: #AFEEEE;
-    color: #2a2a2a;
-    cursor: pointer;
-    border-radius: 5px;
-    font-size: 16px;
-    padding: 10px;
-    border: none;
+.fund-table button:hover:enabled {
+  background-color: #2ecc71;
 }
 
-.pay-button:hover {
-    background-color: #98dcdc;
+/* Fade-In Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-@media (max-width: 600px) {
-    .financial-summary {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .financial-summary p {
-        margin-bottom: 10px;
-    }
+/* Utility class for triggering fade animation */
+.fade-in {
+  animation: fadeIn 0.8s ease-in-out;
 }
 
-.assign-admin-head {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+
+
+/*AssignAdminHead*/
+/* General Page Container */
+.assign-admin-head-container {
+  min-height: 100vh;
+  background-color: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+  animation: fadeIn 0.8s ease-in-out;
 }
 
-.header {
-    width: 100%;
-    text-align: center;
-    padding: 20px;
-    background-color: #1e1e1e;
-    /* Matches navbar */
-    color: #AFEEEE;
+/* Content Section */
+.assign-admin-head-content {
+  background-color: #111;
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 0 15px rgba(57, 255, 20, 0.3);
+  max-width: 600px;
+  width: 100%;
+  text-align: center;
 }
 
-.header h1,
-.footer p {
-    margin: 0;
+/* Title */
+.assign-admin-head-title {
+  color: #39FF14;
+  font-size: 2rem;
+  margin-bottom: 30px;
+  font-weight: bold;
 }
 
-.main-content {
-    flex: 1;
-    padding: 20px;
-    background-color: #121212;
+/* Form Styling */
+.assign-admin-head-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
-.register-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: calc(100vh - 60px);
-    padding: 20px;
-    margin-top: 60px;
-    background-color: #121212;
-    /* Dark background */
+.assign-admin-head-input-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
-.register {
-    background-color: #2a2a2a;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+.assign-admin-head-input-label {
+  color: #ccc;
+  font-size: 1rem;
+  margin-bottom: 8px;
 }
 
-.register h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #AFEEEE;
-    font-size: 1.8rem;
+.assign-admin-head-input-field {
+  padding: 10px;
+  width: 100%;
+  background-color: #222;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
 }
 
-.register label {
-    display: block;
-    margin: 10px 0 5px;
-    font-weight: bold;
-    color: #cccccc;
+.assign-admin-head-input-field:focus {
+  outline: none;
+  border: 2px solid #39FF14;
 }
 
-.register input,
-.register textarea {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #444;
-    border-radius: 4px;
-    background-color: #1e1e1e;
-    /* Input background */
-    color: #e0e0e0;
-    /* Input text */
+.assign-admin-head-submit-button {
+  background-color: #39FF14;
+  color: #000;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
-.register input:focus,
-.register textarea:focus {
-    border-color: #AFEEEE;
-    /* Highlight on focus */
-    outline: none;
+.assign-admin-head-submit-button:hover {
+  background-color: #2ecc71;
 }
 
-.button-group {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-    margin-top: 1rem;
+/* Fade-In Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.button-group button {
-    flex: 1;
-    padding: 0.7rem;
-    background-color: #AFEEEE;
-    color: #121212;
-    border: none;
-    border-radius: 5px;
-    font-size: 1rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s ease-in-out;
+/* Utility class for triggering fade animation */
+.fade-in {
+  animation: fadeIn 0.8s ease-in-out;
 }
 
-.button-group button:hover {
-    background-color: #98dcdc;
-    /* Lighter turquoise on hover */
+
+.error-message {
+  color: #ff6b6b;
+  /* Slightly brighter red for better readability in dark mode */
+  margin-bottom: 15px;
+  padding: 10px;
+  background-color: #2a0000;
+  /* Deep dark red background for dark mode */
+  border-radius: 5px;
+  border: 1px solid #ff6b6b;
+  /* Optional: subtle border for better structure */
 }
 
-.button-group button:first-child {
-    margin-right: 5px;
+
+.assign-admin-head-submit-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
 }
 
-.button-group button:last-child {
-    margin-left: 5px;
+.connect-button {
+  background: linear-gradient(135deg, #00bcd4, #faff00);
+  color: #000;
+  padding: 14px 30px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 1rem;
+  text-decoration: none;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 0 15px rgba(0, 188, 212, 0.5);
+  max-width: 240px;
+  /* prevents it from stretching full width */
+  width: fit-content;
+  /* takes up only the space it needs */
+  white-space: nowrap;
+  /* keeps text on one line */
+  border: none;
+  cursor: pointer;
+}
+
+.connect-button:hover {
+  background: linear-gradient(135deg, #faff00, #00bcd4);
+  transform: scale(1.05);
+  color: #111;
+}
+
+.back-home-X {
+  display: inline-block;
+  margin-top: 25px;
+  font-size: 0.9rem;
+  color: #888;
+  text-decoration: none;
+}
+
+.back-home-X:hover {
+  background: linear-gradient(135deg, #faff00, #00bcd4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
 }
