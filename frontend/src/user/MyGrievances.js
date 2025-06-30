@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import './css/style.css';
 import contractABI from './../contracts/GrievanceSystem.json';
 import { ethers } from 'ethers';
@@ -10,7 +10,6 @@ function MyGrievances() {
   const [grievances, setGrievances] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchMyGrievances = async () => {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import './css/style.css';
 import contractABI from './../contracts/GrievanceSystem.json';
 import { ethers } from 'ethers';
@@ -13,11 +13,30 @@ function AssignTaxes() {
     const [isAdminGovt, setIsAdminGovt] = useState(false);
     const [loading, setLoading] = useState(false);
 
-    useEffect(() => {
-        initializeContract();
+    const fetchTaxAmount = useCallback(async (contractInstance) => {
+        try {
+            const amount = await contractInstance.fixedTaxAmount();
+            setTaxAmount(amount.toString()); // Store in wei
+        } catch (err) {
+            console.error("Error fetching tax amount:", err);
+        }
     }, []);
 
-    const initializeContract = async () => {
+    const fetchTaxPayments = useCallback(async (contractInstance) => {
+        try {
+            const [addresses, amounts, statuses] = await contractInstance.viewTaxPayments();
+            const payments = addresses.map((address, index) => ({
+                address,
+                amount: amounts[index].toString(), // Store in wei
+                paid: statuses[index]
+            }));
+            setTaxPayments(payments);
+        } catch (err) {
+            console.error("Error fetching tax payments:", err);
+        }
+    }, []);
+
+    const initializeContract = useCallback(async () => {
         if (!window.ethereum) {
             alert("Please install MetaMask!");
             return;
@@ -44,30 +63,11 @@ function AssignTaxes() {
         } finally {
             setLoading(false);
         }
-    };
+    }, [fetchTaxAmount, fetchTaxPayments]);
 
-    const fetchTaxAmount = async (contractInstance) => {
-        try {
-            const amount = await contractInstance.fixedTaxAmount();
-            setTaxAmount(amount.toString()); // Store in wei
-        } catch (err) {
-            console.error("Error fetching tax amount:", err);
-        }
-    };
-
-    const fetchTaxPayments = async (contractInstance) => {
-        try {
-            const [addresses, amounts, statuses] = await contractInstance.viewTaxPayments();
-            const payments = addresses.map((address, index) => ({
-                address,
-                amount: amounts[index].toString(), // Store in wei
-                paid: statuses[index]
-            }));
-            setTaxPayments(payments);
-        } catch (err) {
-            console.error("Error fetching tax payments:", err);
-        }
-    };
+    useEffect(() => {
+        initializeContract();
+    }, [initializeContract]);
 
     const handleSetTaxAmount = async () => {
         try {

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import './css/style.css';
 import contractABI from './../contracts/GrievanceSystem.json';
 import { ethers } from 'ethers';
-import { Link } from 'react-router-dom';
 
 const contractAddress = "0x7Ea1cB94653bb0623C62F293dd864fea883369B2";
 

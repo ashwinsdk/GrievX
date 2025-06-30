@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import './css/style.css';
 import { Link } from 'react-router-dom';
 import contractABI from './../contracts/GrievanceSystem.json';
@@ -13,40 +13,7 @@ function SendFundPage() {
   const [isAdminGovt, setIsAdminGovt] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    initializeContract();
-  }, []);
-
-  const initializeContract = async () => {
-    if (!window.ethereum) {
-      alert("Please install MetaMask!");
-      return;
-    }
-
-    try {
-      setLoading(true);
-      const provider = new ethers.BrowserProvider(window.ethereum);
-      await provider.send("eth_requestAccounts", []);
-      const signer = await provider.getSigner();
-      const instance = new ethers.Contract(contractAddress, contractABI.abi, signer);
-      setContract(instance);
-
-      // Check if user is adminGovt
-      const adminGovt = await instance.adminGovt();
-      const currentAddress = await signer.getAddress();
-      setIsAdminGovt(currentAddress.toLowerCase() === adminGovt.toLowerCase());
-
-      await fetchProjects(instance);
-      await fetchBalance(instance);
-    } catch (err) {
-      console.error("Error initializing contract:", err);
-      alert("Failed to connect to contract");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const fetchProjects = async (contractInstance) => {
+  const fetchProjects = useCallback(async (contractInstance) => {
     try {
       const allProjects = [];
       let i = 0;
@@ -74,16 +41,49 @@ function SendFundPage() {
     } catch (err) {
       console.error("Error fetching projects:", err);
     }
-  };
+  }, []);
 
-  const fetchBalance = async (contractInstance) => {
+  const fetchBalance = useCallback(async (contractInstance) => {
     try {
       const rawBalance = await contractInstance.getContractBalance();
       setBalance(rawBalance);
     } catch (err) {
       console.error("Error fetching balance:", err);
     }
-  };
+  }, []);
+
+  const initializeContract = useCallback(async () => {
+    if (!window.ethereum) {
+      alert("Please install MetaMask!");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const provider = new ethers.BrowserProvider(window.ethereum);
+      await provider.send("eth_requestAccounts", []);
+      const signer = await provider.getSigner();
+      const instance = new ethers.Contract(contractAddress, contractABI.abi, signer);
+      setContract(instance);
+
+      // Check if user is adminGovt
+      const adminGovt = await instance.adminGovt();
+      const currentAddress = await signer.getAddress();
+      setIsAdminGovt(currentAddress.toLowerCase() === adminGovt.toLowerCase());
+
+      await fetchProjects(instance);
+      await fetchBalance(instance);
+    } catch (err) {
+      console.error("Error initializing contract:", err);
+      alert("Failed to connect to contract");
+    } finally {
+      setLoading(false);
+    }
+  }, [fetchProjects, fetchBalance]);
+
+  useEffect(() => {
+    initializeContract();
+  }, [initializeContract]);
 
   const handleFundProject = async (projectId) => {
     try {
